@@ -121,7 +121,7 @@ export function DailyCheckIn() {
           <div className="grid gap-4 sm:grid-cols-3">
             {numberFields.map((field) => {
               const fieldInfo = DAILY_LOG_FIELDS[field];
-              const value = dailyLog[field as keyof typeof dailyLog];
+              const value = dailyLog[field as keyof typeof dailyLog] as number | null;
               return (
                 <div key={field} className="space-y-2">
                   <Label htmlFor={field}>{fieldInfo.label}</Label>

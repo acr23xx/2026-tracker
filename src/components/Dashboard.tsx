@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { format, subDays, eachDayOfInterval, startOfMonth } from 'date-fns';
 import { useTrackerStore } from '@/lib/store';
+import type { BingoSquare } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -74,7 +75,7 @@ export function Dashboard() {
   
   // Check for bingo lines
   const checkBingo = useMemo(() => {
-    const grid = [];
+    const grid: BingoSquare[][] = [];
     for (let i = 0; i < 5; i++) {
       grid.push(bingoSquares.slice(i * 5, (i + 1) * 5));
     }

@@ -28,6 +28,7 @@ interface TrackerState {
   getDailyLog: (date: string) => DailyLog;
   updateDailyLog: (date: string, updates: Partial<DailyLog>) => Promise<void>;
   deleteDailyLog: (date: string) => Promise<void>;
+  checkIn: (date: string) => Promise<void>;
   
   // Book actions
   addBook: (book: Omit<Book, 'id'>) => Promise<void>;
@@ -155,6 +156,10 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     }
   },
   
+  checkIn: async (date: string) => {
+    await get().updateDailyLog(date, { checkedIn: true });
+  },
+
   deleteDailyLog: async (date: string) => {
     set((state) => {
       const newLogs = { ...state.dailyLogs };
