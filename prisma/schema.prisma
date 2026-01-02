@@ -1,0 +1,85 @@
+// Prisma schema for 2026 Bingo Tracker
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Daily log entries - one per day
+model DailyLog {
+  id        String   @id @default(uuid())
+  date      String   @unique // YYYY-MM-DD format
+  checkedIn Boolean  @default(false)
+  
+  // Health & Fitness
+  weight          Float?
+  wakeBefore8am   Boolean @default(false)
+  laFitness       Boolean @default(false)
+  steps10k        Boolean @default(false)
+  intermittentFast Boolean @default(false)
+  
+  // Screen & Substances
+  screenTime  Float?
+  caffeine    Float?
+  alcoholUsed Boolean @default(false)
+  weedUsed    Boolean @default(false)
+  fastFood    Boolean @default(false)
+  
+  // Phone-free & Activities
+  phoneFreeEvening Boolean @default(false)
+  phoneFreeDate    Boolean @default(false)
+  pickleball       Boolean @default(false)
+  golf             Boolean @default(false)
+  liveEvent        Boolean @default(false)
+  
+  notes     String  @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Books read
+model Book {
+  id           String   @id @default(uuid())
+  title        String
+  author       String   @default("")
+  dateFinished String   // YYYY-MM-DD
+  notes        String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Movies watched
+model Movie {
+  id          String   @id @default(uuid())
+  title       String
+  releaseYear Int
+  dateWatched String   // YYYY-MM-DD
+  notes       String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Work sprints
+model Sprint {
+  id        String   @id @default(uuid())
+  name      String
+  startDate String   // YYYY-MM-DD
+  endDate   String   // YYYY-MM-DD
+  points    Int      @default(0)
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// One-time goals
+model OneTimeGoal {
+  id            String   @id @unique // Fixed IDs like 'tv-app', 'dentist', etc.
+  title         String
+  completed     Boolean  @default(false)
+  dateCompleted String?  // YYYY-MM-DD
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
