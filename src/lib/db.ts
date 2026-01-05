@@ -6,8 +6,14 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-  const url = process.env.DATABASE_URL!;
+  const url = process.env.DATABASE_URL;
   const authToken = process.env.TURSO_AUTH_TOKEN;
+  
+  if (!url) {
+    throw new Error('DATABASE_URL environment variable is not set');
+  }
+  
+  console.log('Creating Prisma client with URL:', url.substring(0, 30) + '...');
   
   const adapter = new PrismaLibSql({
     url,

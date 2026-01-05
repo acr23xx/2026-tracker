@@ -9,7 +9,9 @@ export async function GET() {
     });
     return NextResponse.json(movies);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch movies' }, { status: 500 });
+    console.error('Failed to fetch movies:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: 'Failed to fetch movies', details: message }, { status: 500 });
   }
 }
 
@@ -22,7 +24,9 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json(movie);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to create movie' }, { status: 500 });
+    console.error('Failed to create movie:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: 'Failed to create movie', details: message }, { status: 500 });
   }
 }
 
