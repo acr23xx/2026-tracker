@@ -13,11 +13,10 @@ function createPrismaClient() {
     throw new Error('DATABASE_URL environment variable is not set');
   }
   
-  console.log('Creating Prisma client with URL:', url.substring(0, 30) + '...');
-  
+  // Pass config to adapter - ensure url is trimmed
   const adapter = new PrismaLibSql({
-    url,
-    authToken,
+    url: url.trim(),
+    authToken: authToken?.trim(),
   });
   
   return new PrismaClient({ adapter });
