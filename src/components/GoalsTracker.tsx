@@ -27,7 +27,7 @@ export function GoalsTracker() {
       </div>
       
       {/* Progress Card */}
-      <Card className="border-2 border-teal-200 bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30 dark:border-teal-800">
+      <Card className="border-2 border-teal-200 bg-linear-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30 dark:border-teal-800">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center">

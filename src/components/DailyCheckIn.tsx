@@ -268,7 +268,7 @@ export function DailyCheckIn() {
           <Button
             size="lg"
             onClick={() => checkIn(dateStr)}
-            className="min-w-[200px] text-lg font-semibold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+            className="min-w-[200px] text-lg font-semibold bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
           >
             Complete Check-in
           </Button>

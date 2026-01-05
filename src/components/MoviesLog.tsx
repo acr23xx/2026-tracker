@@ -97,7 +97,7 @@ export function MoviesLog() {
         
         <Button 
           onClick={openAddDialog}
-          className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
+          className="bg-linear-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Movie
@@ -168,7 +168,7 @@ export function MoviesLog() {
       </Dialog>
       
       {/* Progress Card */}
-      <Card className="border-2 border-rose-200 bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 dark:border-rose-800">
+      <Card className="border-2 border-rose-200 bg-linear-to-br from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 dark:border-rose-800">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center">

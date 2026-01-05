@@ -119,7 +119,7 @@ export function Dashboard() {
     <div className="space-y-6">
       {/* Top Stats */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card className="bg-gradient-to-br from-amber-500 to-orange-500 text-white border-0">
+        <Card className="bg-linear-to-br from-amber-500 to-orange-500 text-white border-0">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -132,7 +132,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-green-500 to-emerald-500 text-white border-0">
+        <Card className="bg-linear-to-br from-green-500 to-emerald-500 text-white border-0">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -145,7 +145,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-purple-500 to-pink-500 text-white border-0">
+        <Card className="bg-linear-to-br from-purple-500 to-pink-500 text-white border-0">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -158,7 +158,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-blue-500 to-indigo-500 text-white border-0">
+        <Card className="bg-linear-to-br from-blue-500 to-indigo-500 text-white border-0">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>

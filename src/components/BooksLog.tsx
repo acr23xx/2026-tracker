@@ -95,7 +95,7 @@ export function BooksLog() {
         
         <Button 
           onClick={openAddDialog}
-          className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+          className="bg-linear-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Book
@@ -162,7 +162,7 @@ export function BooksLog() {
       </Dialog>
       
       {/* Progress Card */}
-      <Card className="border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 dark:border-indigo-800">
+      <Card className="border-2 border-indigo-200 bg-linear-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 dark:border-indigo-800">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center">

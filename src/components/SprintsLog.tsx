@@ -104,7 +104,7 @@ export function SprintsLog() {
         
         <Button 
           onClick={openAddDialog}
-          className="bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-700 hover:to-slate-900"
+          className="bg-linear-to-r from-slate-600 to-slate-800 hover:from-slate-700 hover:to-slate-900"
         >
           <Plus className="mr-2 h-4 w-4" />
           New Sprint
@@ -186,7 +186,7 @@ export function SprintsLog() {
       </Dialog>
       
       {/* Progress Card */}
-      <Card className="border-2 border-slate-200 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-950/30 dark:to-gray-950/30 dark:border-slate-800">
+      <Card className="border-2 border-slate-200 bg-linear-to-br from-slate-50 to-gray-50 dark:from-slate-950/30 dark:to-gray-950/30 dark:border-slate-800">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center">

@@ -69,7 +69,7 @@ export default function Home() {
   
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-stone-50 via-amber-50/30 to-orange-50/20">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-stone-50 via-amber-50/30 to-orange-50/20">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
           <p className="text-muted-foreground">Loading your tracker...</p>
@@ -79,7 +79,7 @@ export default function Home() {
   }
   
   return (
-    <div className={cn('min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-orange-50/20 dark:from-stone-950 dark:via-amber-950/10 dark:to-orange-950/10', isDark && 'dark')}>
+    <div className={cn('min-h-screen bg-linear-to-br from-stone-50 via-amber-50/30 to-orange-50/20 dark:from-stone-950 dark:via-amber-950/10 dark:to-orange-950/10', isDark && 'dark')}>
       {/* Background Pattern */}
       <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmOTc5MTYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50 pointer-events-none" />
       
@@ -98,7 +98,7 @@ export default function Home() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white font-bold text-lg shadow-lg shadow-amber-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-amber-500 to-orange-500 text-white font-bold text-lg shadow-lg shadow-amber-500/20">
                 B
               </div>
               <div>
@@ -120,7 +120,7 @@ export default function Home() {
                     className={cn(
                       'gap-2',
                       activeTab === tab.id 
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20' 
+                        ? 'bg-linear-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20' 
                         : ''
                     )}
                   >
@@ -184,7 +184,7 @@ export default function Home() {
                           className={cn(
                             'justify-start gap-3',
                             activeTab === tab.id 
-                              ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white' 
+                              ? 'bg-linear-to-r from-amber-500 to-orange-500 text-white' 
                               : ''
                           )}
                         >
