@@ -263,34 +263,35 @@ export function DailyCheckIn() {
       </Card>
       
       {/* Check-in Button */}
-      <div className="flex justify-center">
-        <Button
-          size="lg"
-          onClick={() => checkIn(dateStr)}
-          disabled={dailyLog.checkedIn}
-          className={cn(
-            'min-w-[200px] text-lg font-semibold transition-all',
-            dailyLog.checkedIn
-              ? 'bg-green-600 hover:bg-green-600'
-              : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
-          )}
-        >
-          {dailyLog.checkedIn ? (
-            <>
-              <Check className="mr-2 h-5 w-5" />
-              Day Checked In ✓
-            </>
-          ) : (
-            'Complete Check-in'
-          )}
-        </Button>
+      <div className="flex flex-col items-center gap-3">
+        {!dailyLog.checkedIn ? (
+          <Button
+            size="lg"
+            onClick={() => checkIn(dateStr)}
+            className="min-w-[200px] text-lg font-semibold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+          >
+            Complete Check-in
+          </Button>
+        ) : (
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+              <Check className="h-5 w-5" />
+              <span className="font-semibold">Day Checked In ✓</span>
+            </div>
+            <p className="text-center text-sm text-muted-foreground">
+              ✨ This day is locked in! Your data counts towards weekly and monthly goals.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => updateDailyLog(dateStr, { checkedIn: false })}
+              className="mt-2 text-orange-600 border-orange-300 hover:bg-orange-50 dark:hover:bg-orange-950"
+            >
+              Undo Check-in (Edit Mode)
+            </Button>
+          </div>
+        )}
       </div>
-      
-      {dailyLog.checkedIn && (
-        <p className="text-center text-sm text-green-600 dark:text-green-400">
-          ✨ This day is locked in! Your data counts towards weekly and monthly goals.
-        </p>
-      )}
     </div>
   );
 }

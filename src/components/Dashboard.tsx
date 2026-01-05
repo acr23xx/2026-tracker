@@ -239,8 +239,8 @@ export function Dashboard() {
           <CardTitle>Last 7 Days Check-ins</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[120px]">
-            <ResponsiveContainer width="100%" height="100%">
+          <div style={{ width: '100%', height: 120 }}>
+            <ResponsiveContainer width="100%" height={120}>
               <BarChart data={last7Days}>
                 <XAxis dataKey="date" tick={{ fill: 'currentColor', fontSize: 12 }} />
                 <Bar dataKey="checkedIn" radius={[4, 4, 0, 0]}>
