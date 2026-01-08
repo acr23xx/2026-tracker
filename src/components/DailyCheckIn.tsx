@@ -24,7 +24,7 @@ export function DailyCheckIn() {
   const dailyLog = getDailyLog(dateStr);
   
   const booleanFields: DailyLogField[] = [
-    'wakeBefore8am', 'laFitness', 'steps10k', 'intermittentFast',
+    'wakeBefore9am', 'laFitness', 'closedAllRings', 'intermittentFast',
     'alcoholUsed', 'weedUsed', 'fastFood',
     'phoneFreeEvening', 'phoneFreeDate', 'pickleball', 'golf', 'liveEvent'
   ];

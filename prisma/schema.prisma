@@ -16,9 +16,9 @@ model DailyLog {
   
   // Health & Fitness
   weight          Float?
-  wakeBefore8am   Boolean @default(false)
+  wakeBefore9am   Boolean @default(false)
   laFitness       Boolean @default(false)
-  steps10k        Boolean @default(false)
+  closedAllRings  Boolean @default(false)
   intermittentFast Boolean @default(false)
   
   // Screen & Substances

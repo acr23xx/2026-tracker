@@ -7,9 +7,9 @@ export interface DailyLog {
   
   // Health & Fitness
   weight: number | null;
-  wakeBefore8am: boolean;
+  wakeBefore9am: boolean;
   laFitness: boolean;
-  steps10k: boolean;
+  closedAllRings: boolean;
   intermittentFast: boolean;
   
   // Screen & Substances
@@ -97,9 +97,9 @@ export interface BingoSquare {
 // Daily log field labels
 export const DAILY_LOG_FIELDS = {
   weight: { label: '⚖️ Weight (lbs)', type: 'number' as const },
-  wakeBefore8am: { label: '🌅 Wake <8am', type: 'boolean' as const },
+  wakeBefore9am: { label: '🌅 Wake <9am', type: 'boolean' as const },
   laFitness: { label: '🏋️ LA Fitness', type: 'boolean' as const },
-  steps10k: { label: '👟 10k Steps', type: 'boolean' as const },
+  closedAllRings: { label: '⌚ Closed All Rings', type: 'boolean' as const },
   intermittentFast: { label: '🍽️ Intermittent Fast', type: 'boolean' as const },
   screenTime: { label: '📱 Screen Time (hrs)', type: 'number' as const },
   caffeine: { label: '☕ Caffeine (mg)', type: 'number' as const },

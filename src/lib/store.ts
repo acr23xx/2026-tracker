@@ -66,9 +66,9 @@ const createEmptyDailyLog = (date: string): DailyLog => ({
   date,
   checkedIn: false,
   weight: null,
-  wakeBefore8am: false,
+  wakeBefore9am: false,
   laFitness: false,
-  steps10k: false,
+  closedAllRings: false,
   intermittentFast: false,
   screenTime: null,
   caffeine: null,
@@ -509,8 +509,8 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     
     // Count daily log totals
     let laFitnessCount = 0;
-    let wakeBefore8amCount = 0;
-    let steps10kCount = 0;
+    let wakeBefore9amCount = 0;
+    let closedAllRingsCount = 0;
     let intermittentFastCount = 0;
     let lowCaffeineCount = 0;
     let phoneFreeEveningsCount = 0;
@@ -522,10 +522,10 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     Object.values(logs).forEach((log) => {
       if (log.checkedIn) {
         if (log.laFitness) laFitnessCount++;
-        if (log.wakeBefore8am) wakeBefore8amCount++;
-        if (log.steps10k) steps10kCount++;
+        if (log.wakeBefore9am) wakeBefore9amCount++;
+        if (log.closedAllRings) closedAllRingsCount++;
         if (log.intermittentFast) intermittentFastCount++;
-        if (log.caffeine !== null && log.caffeine < 100) lowCaffeineCount++;
+        if (log.caffeine !== null && log.caffeine < 200) lowCaffeineCount++;
         if (log.phoneFreeEvening) phoneFreeEveningsCount++;
         if (log.phoneFreeDate) phoneFreeeDateCount++;
         if (log.pickleball) pickleballCount++;
@@ -581,7 +581,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       
       // Row 2
       { id: '6', category: 'Media', title: 'Read 5 books', progress: booksCount, target: 5, done: booksCount >= 5, measurement: 'Books finished' },
-      { id: '7', category: 'Habits', title: 'Wake up before 8am 100 times', progress: wakeBefore8amCount, target: 100, done: wakeBefore8amCount >= 100, measurement: 'Wake <8am check-ins' },
+      { id: '7', category: 'Habits', title: 'Wake up before 9am 100 times', progress: wakeBefore9amCount, target: 100, done: wakeBefore9amCount >= 100, measurement: 'Wake <9am check-ins' },
       { id: '8', category: 'Media', title: 'Watch 50 movies released in 2026', progress: movies2026Count, target: 50, done: movies2026Count >= 50, measurement: '2026 movies watched' },
       { id: '9', category: 'Projects', title: 'Create TV show tracking app', progress: tvApp ? 1 : 0, target: 1, done: tvApp, measurement: 'One-time goal' },
       { id: '10', category: 'Tech', title: 'Phone-free evening 1x/week for 8 straight weeks', progress: consecutivePhoneFreeWeeks, target: 8, done: consecutivePhoneFreeWeeks >= 8, measurement: 'Consecutive phone-free weeks' },
@@ -594,7 +594,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       { id: '15', category: 'Tech', title: 'Daily avg screen time <4h for 10 total weeks', progress: totalScreenUnder4Weeks, target: 10, done: totalScreenUnder4Weeks >= 10, measurement: 'Weeks with avg <4h screen time' },
       
       // Row 4
-      { id: '16', category: 'Fitness', title: '10,000 steps in a day 50 times', progress: steps10kCount, target: 50, done: steps10kCount >= 50, measurement: '10k steps days' },
+      { id: '16', category: 'Fitness', title: 'Close all Apple Watch rings 100 times', progress: closedAllRingsCount, target: 100, done: closedAllRingsCount >= 100, measurement: 'Days with all rings closed' },
       { id: '17', category: 'Habits', title: 'No alcohol for an entire month', progress: hasAlcoholFreeMonth ? 1 : 0, target: 1, done: hasAlcoholFreeMonth, measurement: 'Complete month with all check-ins, no alcohol' },
       { id: '18', category: 'Home', title: 'Get rid of clothes that do not fit', progress: clothes ? 1 : 0, target: 1, done: clothes, measurement: 'One-time goal' },
       { id: '19', category: 'Habits', title: 'Intermittent fast 100 times', progress: intermittentFastCount, target: 100, done: intermittentFastCount >= 100, measurement: 'Intermittent fast days' },
@@ -604,7 +604,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       { id: '21', category: 'Fun', title: 'Go to 5 live events', progress: liveEventCount, target: 5, done: liveEventCount >= 5, measurement: 'Live events attended' },
       { id: '22', category: 'Fun', title: 'Play Pickleball 10 times', progress: pickleballCount, target: 10, done: pickleballCount >= 10, measurement: 'Pickleball sessions' },
       { id: '23', category: 'Fun', title: 'Golf 5 times', progress: golfCount, target: 5, done: golfCount >= 5, measurement: 'Golf sessions' },
-      { id: '24', category: 'Habits', title: 'Under 100 mg of caffeine 75 times', progress: lowCaffeineCount, target: 75, done: lowCaffeineCount >= 75, measurement: 'Days with <100mg caffeine' },
+      { id: '24', category: 'Habits', title: 'Under 200 mg of caffeine 75 times', progress: lowCaffeineCount, target: 75, done: lowCaffeineCount >= 75, measurement: 'Days with <200mg caffeine' },
       { id: '25', category: 'Relationship', title: '10 phone-free date nights', progress: phoneFreeeDateCount, target: 10, done: phoneFreeeDateCount >= 10, measurement: 'Phone-free date nights' },
     ];
     
