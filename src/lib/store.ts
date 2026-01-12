@@ -534,32 +534,24 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       }
     });
     
-    // Check for fast-food-free months
-    let hasFastFoodFreeMonth = false;
-    
-    for (let month = 0; month < 12; month++) {
-      const monthDate = new Date(2026, month, 1);
-      if (isAfter(monthDate, today)) break;
-      
-      const summary = state.getMonthlySummary(monthDate);
-      if (summary.isFastFoodFreeMonth) hasFastFoodFreeMonth = true;
-    }
-    
-    // Calculate 80% year goals for weed and alcohol
+    // Calculate 80% year goals for weed, alcohol, and fast food
     let totalCheckedInDays = 0;
     let weedFreeDays = 0;
     let alcoholFreeDays = 0;
+    let fastFoodFreeDays = 0;
     
     Object.values(logs).forEach((log) => {
       if (log.checkedIn) {
         totalCheckedInDays++;
         if (!log.weedUsed) weedFreeDays++;
         if (!log.alcoholUsed) alcoholFreeDays++;
+        if (!log.fastFood) fastFoodFreeDays++;
       }
     });
     
     const weedFreePercent = totalCheckedInDays > 0 ? (weedFreeDays / totalCheckedInDays) * 100 : 0;
     const alcoholFreePercent = totalCheckedInDays > 0 ? (alcoholFreeDays / totalCheckedInDays) * 100 : 0;
+    const fastFoodFreePercent = totalCheckedInDays > 0 ? (fastFoodFreeDays / totalCheckedInDays) * 100 : 0;
     
     // Count sprints with 10+ points
     const sprintsWith10Points = state.sprints.filter(s => s.points >= 10).length;
@@ -588,7 +580,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       { id: '1', category: 'Health', title: 'Get to 175 lbs', progress: minWeight || 0, target: 175, done: minWeight !== null && minWeight <= 175, measurement: 'Min weight ≤ 175' },
       { id: '2', category: 'Habits', title: 'Weed-free 80% of the year', progress: Math.round(weedFreePercent), target: 80, done: weedFreePercent >= 80, measurement: `${weedFreeDays}/${totalCheckedInDays} days clean (${Math.round(weedFreePercent)}%)` },
       { id: '3', category: 'Fitness', title: 'Go to LA Fitness 80 times', progress: laFitnessCount, target: 80, done: laFitnessCount >= 80, measurement: 'LA Fitness check-ins' },
-      { id: '4', category: 'Food', title: 'No fast food for an entire month', progress: hasFastFoodFreeMonth ? 1 : 0, target: 1, done: hasFastFoodFreeMonth, measurement: 'Complete month with all check-ins, no fast food' },
+      { id: '4', category: 'Food', title: 'Fast-food-free 80% of the year', progress: Math.round(fastFoodFreePercent), target: 80, done: fastFoodFreePercent >= 80, measurement: `${fastFoodFreeDays}/${totalCheckedInDays} days clean (${Math.round(fastFoodFreePercent)}%)` },
       { id: '5', category: 'Work', title: 'Get 10 points in a sprint 10 times', progress: sprintsWith10Points, target: 10, done: sprintsWith10Points >= 10, measurement: 'Sprints with 10+ points' },
       
       // Row 2

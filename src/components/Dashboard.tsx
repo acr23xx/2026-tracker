@@ -224,9 +224,9 @@ export function Dashboard() {
               </Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">Fast-food-free</span>
-              <Badge variant={monthlySummary.isFastFoodFreeMonth ? 'default' : 'outline'} className={monthlySummary.isFastFoodFreeMonth ? 'bg-green-500' : ''}>
-                {monthlySummary.isFastFoodFreeMonth ? '✓ Yes!' : `${monthlySummary.fastFoodDays} days`}
+              <span className="text-sm">Fast food this month</span>
+              <Badge variant={monthlySummary.fastFoodDays === 0 ? 'default' : 'outline'} className={monthlySummary.fastFoodDays === 0 ? 'bg-green-500' : ''}>
+                {monthlySummary.fastFoodDays === 0 ? '✓ Clean!' : `${monthlySummary.fastFoodDays} days`}
               </Badge>
             </div>
           </CardContent>
