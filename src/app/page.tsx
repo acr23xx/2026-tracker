@@ -14,7 +14,8 @@ import {
   Sun,
   Download,
   Upload,
-  Loader2
+  Loader2,
+  MoreHorizontal
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -28,19 +29,25 @@ import { useTrackerStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
 
 const TABS = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-amber-600' },
-  { id: 'daily', label: 'Daily Log', icon: CalendarCheck, color: 'text-green-600' },
-  { id: 'books', label: 'Books', icon: BookOpen, color: 'text-indigo-600' },
-  { id: 'movies', label: 'Movies', icon: Film, color: 'text-rose-600' },
-  { id: 'sprints', label: 'Sprints', icon: Flame, color: 'text-slate-600' },
-  { id: 'goals', label: 'One-Time Goals', icon: Target, color: 'text-teal-600' },
+  { id: 'dashboard', label: 'Dashboard', shortLabel: 'Home', icon: LayoutDashboard, color: 'text-amber-600' },
+  { id: 'daily', label: 'Daily Log', shortLabel: 'Daily', icon: CalendarCheck, color: 'text-green-600' },
+  { id: 'books', label: 'Books', shortLabel: 'Books', icon: BookOpen, color: 'text-indigo-600' },
+  { id: 'movies', label: 'Movies', shortLabel: 'Movies', icon: Film, color: 'text-rose-600' },
+  { id: 'sprints', label: 'Sprints', shortLabel: 'Sprints', icon: Flame, color: 'text-slate-600' },
+  { id: 'goals', label: 'One-Time Goals', shortLabel: 'Goals', icon: Target, color: 'text-teal-600' },
 ] as const;
+
+// Main tabs for bottom nav (first 4)
+const MOBILE_MAIN_TABS = TABS.slice(0, 4);
+// Additional tabs in overflow menu
+const MOBILE_MORE_TABS = TABS.slice(4);
 
 type TabId = typeof TABS[number]['id'];
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -213,7 +220,7 @@ export default function Home() {
       </header>
       
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 pb-24 lg:pb-8">
         <div className="max-w-6xl mx-auto">
           {activeTab === 'dashboard' && <Dashboard />}
           {activeTab === 'daily' && <DailyCheckIn />}
@@ -224,8 +231,91 @@ export default function Home() {
         </div>
       </main>
       
-      {/* Footer */}
-      <footer className="border-t bg-white/50 dark:bg-stone-950/50 dark:border-stone-800 mt-auto">
+      {/* Mobile Bottom Navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 backdrop-blur-lg dark:bg-stone-950/95 dark:border-stone-800 safe-area-pb">
+        <div className="flex items-center justify-around h-16 px-2">
+          {MOBILE_MAIN_TABS.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  'flex flex-col items-center justify-center w-full h-full gap-0.5 rounded-lg transition-colors',
+                  isActive 
+                    ? 'text-amber-600 dark:text-amber-400' 
+                    : 'text-muted-foreground'
+                )}
+              >
+                <Icon className={cn('h-5 w-5', isActive && 'text-amber-600 dark:text-amber-400')} />
+                <span className="text-[10px] font-medium">{tab.shortLabel}</span>
+                {isActive && (
+                  <div className="absolute bottom-1 w-8 h-1 rounded-full bg-amber-500" />
+                )}
+              </button>
+            );
+          })}
+          
+          {/* More button for additional tabs */}
+          <Sheet open={isMobileMoreOpen} onOpenChange={setIsMobileMoreOpen}>
+            <SheetTrigger asChild>
+              <button
+                className={cn(
+                  'flex flex-col items-center justify-center w-full h-full gap-0.5 rounded-lg transition-colors',
+                  MOBILE_MORE_TABS.some(t => t.id === activeTab)
+                    ? 'text-amber-600 dark:text-amber-400' 
+                    : 'text-muted-foreground'
+                )}
+              >
+                <MoreHorizontal className="h-5 w-5" />
+                <span className="text-[10px] font-medium">More</span>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-auto rounded-t-2xl">
+              <div className="py-4 space-y-2">
+                <p className="text-sm font-semibold text-muted-foreground px-2 mb-3">More Options</p>
+                {MOBILE_MORE_TABS.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <Button
+                      key={tab.id}
+                      variant={activeTab === tab.id ? 'default' : 'ghost'}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        setIsMobileMoreOpen(false);
+                      }}
+                      className={cn(
+                        'w-full justify-start gap-3 h-12',
+                        activeTab === tab.id 
+                          ? 'bg-linear-to-r from-amber-500 to-orange-500 text-white' 
+                          : ''
+                      )}
+                    >
+                      <Icon className={cn('h-5 w-5', activeTab !== tab.id && tab.color)} />
+                      {tab.label}
+                    </Button>
+                  );
+                })}
+                
+                <div className="border-t my-3" />
+                
+                <Button variant="outline" onClick={exportData} className="w-full justify-start gap-3 h-12">
+                  <Download className="h-5 w-5" />
+                  Export Backup
+                </Button>
+                <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full justify-start gap-3 h-12">
+                  <Upload className="h-5 w-5" />
+                  Import Backup
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </nav>
+      
+      {/* Footer - Desktop only */}
+      <footer className="hidden lg:block border-t bg-white/50 dark:bg-stone-950/50 dark:border-stone-800 mt-auto">
         <div className="container mx-auto px-4 py-6">
           <p className="text-center text-sm text-muted-foreground">
             {currentYear} Bingo Tracker • Data stored in SQLite database

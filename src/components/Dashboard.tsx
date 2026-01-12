@@ -118,62 +118,62 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Top Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
         <Card className="bg-linear-to-br from-amber-500 to-orange-500 text-white border-0">
-          <CardContent className="pt-6">
+          <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-amber-100 text-sm font-medium">Current Streak</p>
-                <p className="text-4xl font-bold">{currentStreak}</p>
-                <p className="text-amber-100 text-sm">days</p>
+                <p className="text-amber-100 text-xs sm:text-sm font-medium">Current Streak</p>
+                <p className="text-2xl sm:text-4xl font-bold">{currentStreak}</p>
+                <p className="text-amber-100 text-xs sm:text-sm">days</p>
               </div>
-              <span className="text-5xl">🔥</span>
+              <span className="text-3xl sm:text-5xl">🔥</span>
             </div>
           </CardContent>
         </Card>
         
         <Card className="bg-linear-to-br from-green-500 to-emerald-500 text-white border-0">
-          <CardContent className="pt-6">
+          <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100 text-sm font-medium">Bingo Squares</p>
-                <p className="text-4xl font-bold">{completedSquares}/{totalSquares}</p>
-                <p className="text-green-100 text-sm">completed</p>
+                <p className="text-green-100 text-xs sm:text-sm font-medium">Bingo Squares</p>
+                <p className="text-2xl sm:text-4xl font-bold">{completedSquares}/{totalSquares}</p>
+                <p className="text-green-100 text-xs sm:text-sm">completed</p>
               </div>
-              <span className="text-5xl">✅</span>
+              <span className="text-3xl sm:text-5xl">✅</span>
             </div>
           </CardContent>
         </Card>
         
         <Card className="bg-linear-to-br from-purple-500 to-pink-500 text-white border-0">
-          <CardContent className="pt-6">
+          <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 text-sm font-medium">Bingo Lines</p>
-                <p className="text-4xl font-bold">{checkBingo}</p>
-                <p className="text-purple-100 text-sm">achieved</p>
+                <p className="text-purple-100 text-xs sm:text-sm font-medium">Bingo Lines</p>
+                <p className="text-2xl sm:text-4xl font-bold">{checkBingo}</p>
+                <p className="text-purple-100 text-xs sm:text-sm">achieved</p>
               </div>
-              <span className="text-5xl">🎯</span>
+              <span className="text-3xl sm:text-5xl">🎯</span>
             </div>
           </CardContent>
         </Card>
         
         <Card className="bg-linear-to-br from-blue-500 to-indigo-500 text-white border-0">
-          <CardContent className="pt-6">
+          <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-sm font-medium">Min Weight</p>
-                <p className="text-4xl font-bold">{minWeight || '---'}</p>
-                <p className="text-blue-100 text-sm">lbs (goal: 175)</p>
+                <p className="text-blue-100 text-xs sm:text-sm font-medium">Min Weight</p>
+                <p className="text-2xl sm:text-4xl font-bold">{minWeight || '---'}</p>
+                <p className="text-blue-100 text-xs sm:text-sm">lbs</p>
               </div>
-              <span className="text-5xl">⚖️</span>
+              <span className="text-3xl sm:text-5xl">⚖️</span>
             </div>
           </CardContent>
         </Card>
       </div>
       
       {/* Weekly & Monthly Summary */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">📅 This Week</CardTitle>
@@ -212,15 +212,15 @@ export function Dashboard() {
               </Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">Weed-free</span>
-              <Badge variant={monthlySummary.isWeedFreeMonth ? 'default' : 'outline'} className={monthlySummary.isWeedFreeMonth ? 'bg-green-500' : ''}>
-                {monthlySummary.isWeedFreeMonth ? '✓ Yes!' : `${monthlySummary.weedDays} days used`}
+              <span className="text-sm">Weed this month</span>
+              <Badge variant={monthlySummary.weedDays === 0 ? 'default' : 'outline'} className={monthlySummary.weedDays === 0 ? 'bg-green-500' : ''}>
+                {monthlySummary.weedDays === 0 ? '✓ Clean!' : `${monthlySummary.weedDays} days`}
               </Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">Alcohol-free</span>
-              <Badge variant={monthlySummary.isAlcoholFreeMonth ? 'default' : 'outline'} className={monthlySummary.isAlcoholFreeMonth ? 'bg-green-500' : ''}>
-                {monthlySummary.isAlcoholFreeMonth ? '✓ Yes!' : `${monthlySummary.alcoholDays} days used`}
+              <span className="text-sm">Alcohol this month</span>
+              <Badge variant={monthlySummary.alcoholDays === 0 ? 'default' : 'outline'} className={monthlySummary.alcoholDays === 0 ? 'bg-green-500' : ''}>
+                {monthlySummary.alcoholDays === 0 ? '✓ Clean!' : `${monthlySummary.alcoholDays} days`}
               </Badge>
             </div>
             <div className="flex justify-between items-center">
@@ -259,16 +259,16 @@ export function Dashboard() {
       
       {/* Bingo Board */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <span className="text-2xl">🎯</span> 2026 Bingo Board
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <span className="text-xl sm:text-2xl">🎯</span> 2026 Bingo Board
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             Complete rows, columns, or diagonals for BINGO!
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-5 gap-2">
+        <CardContent className="px-2 sm:px-6">
+          <div className="grid grid-cols-5 gap-1 sm:gap-2">
             {bingoSquares.map((square, index) => {
               const progress = square.target === 1 
                 ? (square.done ? 100 : 0)
@@ -278,31 +278,31 @@ export function Dashboard() {
                 <div
                   key={square.id}
                   className={cn(
-                    'relative aspect-square rounded-lg border-2 p-2 flex flex-col justify-between transition-all',
+                    'relative aspect-square rounded-md sm:rounded-lg border sm:border-2 p-1 sm:p-2 flex flex-col justify-between transition-all',
                     square.done 
                       ? 'bg-green-100 border-green-500 dark:bg-green-900/50 dark:border-green-500' 
                       : CATEGORY_BG[square.category] || 'bg-gray-100 border-gray-200'
                   )}
                 >
-                  {/* Category badge */}
+                  {/* Category badge - hidden on very small screens */}
                   <div className="flex justify-between items-start">
                     <span className={cn(
-                      'text-[8px] font-bold px-1 py-0.5 rounded text-white',
+                      'hidden xs:inline text-[6px] sm:text-[8px] font-bold px-0.5 sm:px-1 py-0.5 rounded text-white truncate max-w-[90%]',
                       CATEGORY_COLORS[square.category] || 'bg-gray-500'
                     )}>
                       {square.category}
                     </span>
-                    {square.done && <span className="text-sm">✅</span>}
+                    {square.done && <span className="text-[10px] sm:text-sm absolute top-0.5 right-0.5 sm:top-1 sm:right-1">✅</span>}
                   </div>
                   
                   {/* Title */}
-                  <p className="text-[9px] font-medium leading-tight line-clamp-3 text-center">
+                  <p className="text-[7px] sm:text-[9px] font-medium leading-tight line-clamp-2 sm:line-clamp-3 text-center px-0.5">
                     {square.title}
                   </p>
                   
                   {/* Progress */}
-                  <div className="space-y-1">
-                    <div className="h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="space-y-0.5 sm:space-y-1">
+                    <div className="h-0.5 sm:h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div 
                         className={cn(
                           'h-full transition-all',
@@ -311,9 +311,9 @@ export function Dashboard() {
                         style={{ width: `${progress}%` }}
                       />
                     </div>
-                    <p className="text-[8px] text-center text-muted-foreground">
+                    <p className="text-[6px] sm:text-[8px] text-center text-muted-foreground">
                       {square.target === 1 
-                        ? (square.done ? 'Done!' : 'Not yet')
+                        ? (square.done ? '✓' : '—')
                         : `${square.progress}/${square.target}`
                       }
                     </p>
@@ -326,7 +326,7 @@ export function Dashboard() {
       </Card>
       
       {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">

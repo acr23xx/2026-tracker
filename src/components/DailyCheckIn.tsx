@@ -53,30 +53,31 @@ export function DailyCheckIn() {
   };
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Date Navigation */}
-      <div className="flex items-center justify-between">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setSelectedDate(subDays(selectedDate, 1))}
-          className="hover:bg-amber-100 dark:hover:bg-amber-900/30"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-        
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row items-center gap-2 sm:justify-between">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSelectedDate(subDays(selectedDate, 1))}
+            className="hover:bg-amber-100 dark:hover:bg-amber-900/30 h-10 w-10"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className={cn(
-                  'min-w-[220px] justify-center font-semibold',
+                  'flex-1 sm:flex-none sm:min-w-[220px] justify-center font-semibold text-sm sm:text-base',
                   isToday && 'border-amber-500 bg-amber-50 dark:bg-amber-900/20'
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                <span className="sm:hidden">{format(selectedDate, 'EEE, MMM d')}</span>
+                <span className="hidden sm:inline">{format(selectedDate, 'EEEE, MMMM d, yyyy')}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="center">
@@ -89,6 +90,17 @@ export function DailyCheckIn() {
             </PopoverContent>
           </Popover>
           
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSelectedDate(addDays(selectedDate, 1))}
+            className="hover:bg-amber-100 dark:hover:bg-amber-900/30 h-10 w-10"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        </div>
+        
+        <div className="flex items-center gap-2">
           {isToday && (
             <Badge className="bg-amber-500 hover:bg-amber-600">Today</Badge>
           )}
@@ -96,15 +108,6 @@ export function DailyCheckIn() {
             <Badge className="bg-green-500 hover:bg-green-600">✓ Checked In</Badge>
           )}
         </div>
-        
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setSelectedDate(addDays(selectedDate, 1))}
-          className="hover:bg-amber-100 dark:hover:bg-amber-900/30"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </Button>
       </div>
       
       {/* Number Inputs */}
@@ -117,22 +120,23 @@ export function DailyCheckIn() {
             Log your daily numbers
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:grid-cols-3">
+        <CardContent className="px-4 sm:px-6">
+          <div className="grid gap-3 sm:gap-4 grid-cols-3">
             {numberFields.map((field) => {
               const fieldInfo = DAILY_LOG_FIELDS[field];
               const value = dailyLog[field as keyof typeof dailyLog] as number | null;
               return (
-                <div key={field} className="space-y-2">
-                  <Label htmlFor={field}>{fieldInfo.label}</Label>
+                <div key={field} className="space-y-1 sm:space-y-2">
+                  <Label htmlFor={field} className="text-xs sm:text-sm">{fieldInfo.label}</Label>
                   <Input
                     id={field}
                     type="number"
+                    inputMode="decimal"
                     step={field === 'weight' ? '0.1' : '1'}
                     placeholder={field === 'weight' ? '175' : field === 'screenTime' ? '4' : '100'}
                     value={value === null ? '' : value}
                     onChange={(e) => handleNumberChange(field, e.target.value)}
-                    className="text-lg"
+                    className="text-base sm:text-lg h-11 sm:h-10"
                   />
                 </div>
               );
@@ -151,8 +155,8 @@ export function DailyCheckIn() {
             Check off what you accomplished today
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <CardContent className="px-3 sm:px-6">
+          <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-3">
             {booleanFields
               .filter(f => !['alcoholUsed', 'weedUsed', 'fastFood'].includes(f))
               .map((field) => {
@@ -162,7 +166,7 @@ export function DailyCheckIn() {
                   <div
                     key={field}
                     className={cn(
-                      'flex items-center gap-3 rounded-lg border p-4 transition-all cursor-pointer',
+                      'flex items-center gap-2 sm:gap-3 rounded-lg border p-3 sm:p-4 transition-all cursor-pointer active:scale-[0.98]',
                       checked
                         ? 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-950/30'
                         : 'border-gray-200 hover:border-amber-300 hover:bg-amber-50/50 dark:border-gray-700 dark:hover:border-amber-700'
@@ -173,19 +177,19 @@ export function DailyCheckIn() {
                       id={field}
                       checked={checked}
                       onCheckedChange={() => handleBooleanChange(field)}
-                      className="h-5 w-5"
+                      className="h-5 w-5 shrink-0"
                     />
                     <Label
                       htmlFor={field}
                       className={cn(
-                        'flex-1 cursor-pointer text-sm font-medium',
+                        'flex-1 cursor-pointer text-xs sm:text-sm font-medium leading-tight',
                         checked && 'text-green-700 dark:text-green-400'
                       )}
                     >
                       {fieldInfo.label}
                     </Label>
                     {checked && (
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      <Check className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0 hidden sm:block" />
                     )}
                   </div>
                 );
@@ -204,8 +208,8 @@ export function DailyCheckIn() {
             Check if you slipped up today (leave unchecked for a win!)
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-3 sm:grid-cols-3">
+        <CardContent className="px-3 sm:px-6">
+          <div className="grid gap-2 sm:gap-3 grid-cols-3">
             {['alcoholUsed', 'weedUsed', 'fastFood'].map((field) => {
               const fieldInfo = DAILY_LOG_FIELDS[field as DailyLogField];
               const checked = dailyLog[field as keyof typeof dailyLog] as boolean;
@@ -213,7 +217,7 @@ export function DailyCheckIn() {
                 <div
                   key={field}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg border p-4 transition-all cursor-pointer',
+                    'flex flex-col sm:flex-row items-center gap-1 sm:gap-3 rounded-lg border p-3 sm:p-4 transition-all cursor-pointer active:scale-[0.98] text-center sm:text-left',
                     checked
                       ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-950/30'
                       : 'border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/20'
@@ -224,19 +228,19 @@ export function DailyCheckIn() {
                     id={field}
                     checked={checked}
                     onCheckedChange={() => handleBooleanChange(field as DailyLogField)}
-                    className="h-5 w-5"
+                    className="h-5 w-5 shrink-0"
                   />
                   <Label
                     htmlFor={field}
                     className={cn(
-                      'flex-1 cursor-pointer text-sm font-medium',
+                      'cursor-pointer text-xs sm:text-sm font-medium leading-tight',
                       checked ? 'text-red-700 dark:text-red-400' : 'text-green-700 dark:text-green-400'
                     )}
                   >
                     {fieldInfo.label}
                   </Label>
                   {!checked && (
-                    <span className="text-green-600 text-xs font-medium">Clean! ✓</span>
+                    <span className="text-green-600 text-[10px] sm:text-xs font-medium hidden sm:inline">Clean! ✓</span>
                   )}
                 </div>
               );

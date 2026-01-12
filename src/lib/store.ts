@@ -534,9 +534,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       }
     });
     
-    // Check for weed-free, alcohol-free, fast-food-free months
-    let hasWeedFreeMonth = false;
-    let hasAlcoholFreeMonth = false;
+    // Check for fast-food-free months
     let hasFastFoodFreeMonth = false;
     
     for (let month = 0; month < 12; month++) {
@@ -544,10 +542,24 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       if (isAfter(monthDate, today)) break;
       
       const summary = state.getMonthlySummary(monthDate);
-      if (summary.isWeedFreeMonth) hasWeedFreeMonth = true;
-      if (summary.isAlcoholFreeMonth) hasAlcoholFreeMonth = true;
       if (summary.isFastFoodFreeMonth) hasFastFoodFreeMonth = true;
     }
+    
+    // Calculate 80% year goals for weed and alcohol
+    let totalCheckedInDays = 0;
+    let weedFreeDays = 0;
+    let alcoholFreeDays = 0;
+    
+    Object.values(logs).forEach((log) => {
+      if (log.checkedIn) {
+        totalCheckedInDays++;
+        if (!log.weedUsed) weedFreeDays++;
+        if (!log.alcoholUsed) alcoholFreeDays++;
+      }
+    });
+    
+    const weedFreePercent = totalCheckedInDays > 0 ? (weedFreeDays / totalCheckedInDays) * 100 : 0;
+    const alcoholFreePercent = totalCheckedInDays > 0 ? (alcoholFreeDays / totalCheckedInDays) * 100 : 0;
     
     // Count sprints with 10+ points
     const sprintsWith10Points = state.sprints.filter(s => s.points >= 10).length;
@@ -574,7 +586,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     const squares: BingoSquare[] = [
       // Row 1
       { id: '1', category: 'Health', title: 'Get to 175 lbs', progress: minWeight || 0, target: 175, done: minWeight !== null && minWeight <= 175, measurement: 'Min weight ≤ 175' },
-      { id: '2', category: 'Habits', title: 'No weed for an entire month', progress: hasWeedFreeMonth ? 1 : 0, target: 1, done: hasWeedFreeMonth, measurement: 'Complete month with all check-ins, no weed' },
+      { id: '2', category: 'Habits', title: 'Weed-free 80% of the year', progress: Math.round(weedFreePercent), target: 80, done: weedFreePercent >= 80, measurement: `${weedFreeDays}/${totalCheckedInDays} days clean (${Math.round(weedFreePercent)}%)` },
       { id: '3', category: 'Fitness', title: 'Go to LA Fitness 80 times', progress: laFitnessCount, target: 80, done: laFitnessCount >= 80, measurement: 'LA Fitness check-ins' },
       { id: '4', category: 'Food', title: 'No fast food for an entire month', progress: hasFastFoodFreeMonth ? 1 : 0, target: 1, done: hasFastFoodFreeMonth, measurement: 'Complete month with all check-ins, no fast food' },
       { id: '5', category: 'Work', title: 'Get 10 points in a sprint 10 times', progress: sprintsWith10Points, target: 10, done: sprintsWith10Points >= 10, measurement: 'Sprints with 10+ points' },
@@ -595,7 +607,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       
       // Row 4
       { id: '16', category: 'Fitness', title: 'Close all Apple Watch rings 100 times', progress: closedAllRingsCount, target: 100, done: closedAllRingsCount >= 100, measurement: 'Days with all rings closed' },
-      { id: '17', category: 'Habits', title: 'No alcohol for an entire month', progress: hasAlcoholFreeMonth ? 1 : 0, target: 1, done: hasAlcoholFreeMonth, measurement: 'Complete month with all check-ins, no alcohol' },
+      { id: '17', category: 'Habits', title: 'Alcohol-free 80% of the year', progress: Math.round(alcoholFreePercent), target: 80, done: alcoholFreePercent >= 80, measurement: `${alcoholFreeDays}/${totalCheckedInDays} days clean (${Math.round(alcoholFreePercent)}%)` },
       { id: '18', category: 'Home', title: 'Get rid of clothes that do not fit', progress: clothes ? 1 : 0, target: 1, done: clothes, measurement: 'One-time goal' },
       { id: '19', category: 'Habits', title: 'Intermittent fast 100 times', progress: intermittentFastCount, target: 100, done: intermittentFastCount >= 100, measurement: 'Intermittent fast days' },
       { id: '20', category: 'Projects', title: 'Create a dynasty salary algorithm', progress: dynastyAlgo ? 1 : 0, target: 1, done: dynastyAlgo, measurement: 'One-time goal' },

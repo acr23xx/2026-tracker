@@ -206,12 +206,12 @@ export function BooksLog() {
                     <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{book.notes}</p>
                   )}
                 </div>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => openEditDialog(book)}
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -219,7 +219,7 @@ export function BooksLog() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDelete(book.id)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

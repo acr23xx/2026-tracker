@@ -200,7 +200,7 @@ export function MoviesLog() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
           {sortedMovies.map((movie) => (
             <Card key={movie.id} className="group transition-all hover:shadow-md">
               <CardContent className="flex items-start gap-4 pt-6">
@@ -226,12 +226,12 @@ export function MoviesLog() {
                     <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{movie.notes}</p>
                   )}
                 </div>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => openEditDialog(movie)}
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -239,7 +239,7 @@ export function MoviesLog() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDelete(movie.id)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
