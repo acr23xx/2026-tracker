@@ -119,52 +119,52 @@ export function Dashboard() {
     <div className="space-y-6">
       {/* Top Stats */}
       <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-linear-to-br from-amber-500 to-orange-500 text-white border-0">
+        <Card className="bg-linear-to-br from-amber-500 to-orange-500 dark:from-amber-700/80 dark:to-orange-700/80 text-white border-0">
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-amber-100 text-xs sm:text-sm font-medium">Current Streak</p>
+                <p className="text-amber-100 dark:text-amber-200/80 text-xs sm:text-sm font-medium">Current Streak</p>
                 <p className="text-2xl sm:text-4xl font-bold">{currentStreak}</p>
-                <p className="text-amber-100 text-xs sm:text-sm">days</p>
+                <p className="text-amber-100 dark:text-amber-200/80 text-xs sm:text-sm">days</p>
               </div>
               <span className="text-3xl sm:text-5xl">🔥</span>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-linear-to-br from-green-500 to-emerald-500 text-white border-0">
+        <Card className="bg-linear-to-br from-green-500 to-emerald-500 dark:from-green-700/80 dark:to-emerald-700/80 text-white border-0">
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100 text-xs sm:text-sm font-medium">Bingo Squares</p>
+                <p className="text-green-100 dark:text-green-200/80 text-xs sm:text-sm font-medium">Bingo Squares</p>
                 <p className="text-2xl sm:text-4xl font-bold">{completedSquares}/{totalSquares}</p>
-                <p className="text-green-100 text-xs sm:text-sm">completed</p>
+                <p className="text-green-100 dark:text-green-200/80 text-xs sm:text-sm">completed</p>
               </div>
               <span className="text-3xl sm:text-5xl">✅</span>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-linear-to-br from-purple-500 to-pink-500 text-white border-0">
+        <Card className="bg-linear-to-br from-purple-500 to-pink-500 dark:from-purple-700/80 dark:to-pink-700/80 text-white border-0">
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 text-xs sm:text-sm font-medium">Bingo Lines</p>
+                <p className="text-purple-100 dark:text-purple-200/80 text-xs sm:text-sm font-medium">Bingo Lines</p>
                 <p className="text-2xl sm:text-4xl font-bold">{checkBingo}</p>
-                <p className="text-purple-100 text-xs sm:text-sm">achieved</p>
+                <p className="text-purple-100 dark:text-purple-200/80 text-xs sm:text-sm">achieved</p>
               </div>
               <span className="text-3xl sm:text-5xl">🎯</span>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-linear-to-br from-blue-500 to-indigo-500 text-white border-0">
+        <Card className="bg-linear-to-br from-blue-500 to-indigo-500 dark:from-blue-700/80 dark:to-indigo-700/80 text-white border-0">
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-xs sm:text-sm font-medium">Min Weight</p>
+                <p className="text-blue-100 dark:text-blue-200/80 text-xs sm:text-sm font-medium">Min Weight</p>
                 <p className="text-2xl sm:text-4xl font-bold">{minWeight || '---'}</p>
-                <p className="text-blue-100 text-xs sm:text-sm">lbs</p>
+                <p className="text-blue-100 dark:text-blue-200/80 text-xs sm:text-sm">lbs</p>
               </div>
               <span className="text-3xl sm:text-5xl">⚖️</span>
             </div>
@@ -348,8 +348,8 @@ export function Dashboard() {
                 🎬
               </div>
               <div>
-                <p className="text-2xl font-bold">{movies.filter(m => m.releaseYear === 2026).length}</p>
-                <p className="text-sm text-muted-foreground">2026 movies (goal: 50)</p>
+                <p className="text-2xl font-bold">{movies.length}</p>
+                <p className="text-sm text-muted-foreground">movies watched (goal: 50)</p>
               </div>
             </div>
           </CardContent>

@@ -391,7 +391,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       phoneFreeEvenings,
       isPhoneFreeWeek: allDaysCheckedIn && phoneFreeEvenings >= 1,
       avgScreenTime,
-      isScreenUnder4Week: allDaysCheckedIn && avgScreenTime < 4 && screenTimeDays > 0,
+      isScreenUnder4Week: allDaysCheckedIn && avgScreenTime < 4.5 && screenTimeDays > 0,
     };
   },
   
@@ -558,7 +558,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     
     // Count books and 2026 movies
     const booksCount = state.books.length;
-    const movies2026Count = state.movies.filter(m => m.releaseYear === 2026).length;
+    const moviesCount = state.movies.length;
     
     // One-time goals
     const tvApp = state.oneTimeGoals.find(g => g.id === 'tv-app')?.completed || false;
@@ -586,16 +586,16 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       // Row 2
       { id: '6', category: 'Media', title: 'Read 5 books', progress: booksCount, target: 5, done: booksCount >= 5, measurement: 'Books finished' },
       { id: '7', category: 'Habits', title: 'Wake up before 9am 100 times', progress: wakeBefore9amCount, target: 100, done: wakeBefore9amCount >= 100, measurement: 'Wake <9am check-ins' },
-      { id: '8', category: 'Media', title: 'Watch 50 movies released in 2026', progress: movies2026Count, target: 50, done: movies2026Count >= 50, measurement: '2026 movies watched' },
+      { id: '8', category: 'Media', title: 'Watch 50 movies', progress: moviesCount, target: 50, done: moviesCount >= 50, measurement: 'Movies watched' },
       { id: '9', category: 'Projects', title: 'Create TV show tracking app', progress: tvApp ? 1 : 0, target: 1, done: tvApp, measurement: 'One-time goal' },
-      { id: '10', category: 'Tech', title: 'Phone-free evening 1x/week for 8 straight weeks', progress: consecutivePhoneFreeWeeks, target: 8, done: consecutivePhoneFreeWeeks >= 8, measurement: 'Consecutive phone-free weeks' },
+      { id: '10', category: 'Tech', title: 'Phone-free evening 30 times', progress: phoneFreeEveningsCount, target: 30, done: phoneFreeEveningsCount >= 30, measurement: 'Phone-free evenings' },
       
       // Row 3
       { id: '11', category: 'Home', title: 'Hang stuff on office walls', progress: officeWalls ? 1 : 0, target: 1, done: officeWalls, measurement: 'One-time goal' },
       { id: '12', category: 'Health', title: 'Go to the Dentist', progress: dentist ? 1 : 0, target: 1, done: dentist, measurement: 'One-time goal' },
       { id: '13', category: 'Wildcard', title: 'Free Square', progress: 1, target: 1, done: true, measurement: 'Always complete' },
       { id: '14', category: 'Health', title: 'Go to the Doctor', progress: doctor ? 1 : 0, target: 1, done: doctor, measurement: 'One-time goal' },
-      { id: '15', category: 'Tech', title: 'Daily avg screen time <4h for 10 total weeks', progress: totalScreenUnder4Weeks, target: 10, done: totalScreenUnder4Weeks >= 10, measurement: 'Weeks with avg <4h screen time' },
+      { id: '15', category: 'Tech', title: 'Daily avg screen time <4.5h for 10 total weeks', progress: totalScreenUnder4Weeks, target: 10, done: totalScreenUnder4Weeks >= 10, measurement: 'Weeks with avg <4.5h screen time' },
       
       // Row 4
       { id: '16', category: 'Fitness', title: 'Close all Apple Watch rings 100 times', progress: closedAllRingsCount, target: 100, done: closedAllRingsCount >= 100, measurement: 'Days with all rings closed' },
@@ -606,7 +606,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       
       // Row 5
       { id: '21', category: 'Fun', title: 'Go to 5 live events', progress: liveEventCount, target: 5, done: liveEventCount >= 5, measurement: 'Live events attended' },
-      { id: '22', category: 'Fun', title: 'Play Pickleball 10 times', progress: pickleballCount, target: 10, done: pickleballCount >= 10, measurement: 'Pickleball sessions' },
+      { id: '22', category: 'Fun', title: 'Play Pickleball 5 times', progress: pickleballCount, target: 5, done: pickleballCount >= 5, measurement: 'Pickleball sessions' },
       { id: '23', category: 'Fun', title: 'Golf 5 times', progress: golfCount, target: 5, done: golfCount >= 5, measurement: 'Golf sessions' },
       { id: '24', category: 'Habits', title: 'Under 200 mg of caffeine 75 times', progress: lowCaffeineCount, target: 75, done: lowCaffeineCount >= 75, measurement: 'Days with <200mg caffeine' },
       { id: '25', category: 'Relationship', title: '10 phone-free date nights', progress: phoneFreeeDateCount, target: 10, done: phoneFreeeDateCount >= 10, measurement: 'Phone-free date nights' },
