@@ -21,7 +21,6 @@ export interface DailyLog {
   
   // Phone-free & Activities
   phoneFreeEvening: boolean;
-  phoneFreeDate: boolean;
   pickleball: boolean;
   golf: boolean;
   liveEvent: boolean;
@@ -42,15 +41,6 @@ export interface Movie {
   title: string;
   releaseYear: number;
   dateWatched: string;
-  notes: string;
-}
-
-export interface Sprint {
-  id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  points: number;
   notes: string;
 }
 
@@ -107,7 +97,6 @@ export const DAILY_LOG_FIELDS = {
   weedUsed: { label: '🌿 Weed Used', type: 'boolean' as const },
   fastFood: { label: '🍔 Fast Food', type: 'boolean' as const },
   phoneFreeEvening: { label: '📵 Phone-free Evening', type: 'boolean' as const },
-  phoneFreeDate: { label: '💑 Phone-free Date Night', type: 'boolean' as const },
   pickleball: { label: '🏓 Pickleball', type: 'boolean' as const },
   golf: { label: '⛳ Golf', type: 'boolean' as const },
   liveEvent: { label: '🎤 Live Event', type: 'boolean' as const },

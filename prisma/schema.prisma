@@ -30,7 +30,6 @@ model DailyLog {
   
   // Phone-free & Activities
   phoneFreeEvening Boolean @default(false)
-  phoneFreeDate    Boolean @default(false)
   pickleball       Boolean @default(false)
   golf             Boolean @default(false)
   liveEvent        Boolean @default(false)
@@ -60,18 +59,6 @@ model Movie {
   notes       String   @default("")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-// Work sprints
-model Sprint {
-  id        String   @id @default(uuid())
-  name      String
-  startDate String   // YYYY-MM-DD
-  endDate   String   // YYYY-MM-DD
-  points    Int      @default(0)
-  notes     String   @default("")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 // One-time goals

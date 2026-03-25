@@ -31,7 +31,7 @@ export function BooksLog() {
     dateFinished: format(new Date(), 'yyyy-MM-dd'),
     notes: '',
   });
-  
+
   const openAddDialog = () => {
     setEditingBook(null);
     setFormData({
@@ -42,7 +42,7 @@ export function BooksLog() {
     });
     setIsDialogOpen(true);
   };
-  
+
   const openEditDialog = (book: Book) => {
     setEditingBook(book);
     setFormData({
@@ -53,33 +53,33 @@ export function BooksLog() {
     });
     setIsDialogOpen(true);
   };
-  
+
   const handleSubmit = async () => {
     if (!formData.title.trim()) return;
-    
+
     if (editingBook) {
       await updateBook(editingBook.id, formData);
     } else {
       await addBook(formData);
     }
-    
+
     setIsDialogOpen(false);
     setEditingBook(null);
   };
-  
+
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this book?')) {
       await deleteBook(id);
     }
   };
-  
+
   const sortedBooks = [...books].sort(
     (a, b) => new Date(b.dateFinished).getTime() - new Date(a.dateFinished).getTime()
   );
-  
-  const target = 5;
+
+  const target = 2;
   const progress = Math.min(100, (books.length / target) * 100);
-  
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -88,20 +88,20 @@ export function BooksLog() {
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <span className="text-3xl">📚</span> Books Read
           </h2>
-          <p className="text-muted-foreground">
-            Bingo Goal: Read 5 books
+          <p className="text-slate-400">
+            Bingo Goal: Read 2 books
           </p>
         </div>
-        
-        <Button 
+
+        <Button
           onClick={openAddDialog}
-          className="bg-linear-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+          className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-lg shadow-indigo-900/30"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Book
         </Button>
       </div>
-      
+
       {/* Dialog for Add/Edit */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
@@ -160,50 +160,50 @@ export function BooksLog() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       {/* Progress Card */}
-      <Card className="border-2 border-indigo-200 bg-linear-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 dark:border-indigo-800">
+      <Card className="border-2 border-indigo-700/50 bg-indigo-950/30">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold text-indigo-900 dark:text-indigo-100">
+              <span className="text-lg font-semibold text-indigo-200">
                 {books.length} / {target} books
               </span>
               <span className="text-2xl">{books.length >= target ? '✅' : '📖'}</span>
             </div>
             <Progress value={progress} className="h-3" />
             {books.length >= target && (
-              <p className="text-sm text-green-600 font-medium">🎉 Bingo square complete!</p>
+              <p className="text-sm text-green-400 font-medium">🎉 Bingo square complete!</p>
             )}
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Books List */}
       {sortedBooks.length === 0 ? (
-        <Card className="border-dashed">
+        <Card className="border-dashed border-white/[0.08]">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <BookOpen className="h-12 w-12 text-muted-foreground/50 mb-4" />
-            <p className="text-lg font-medium text-muted-foreground">No books logged yet</p>
-            <p className="text-sm text-muted-foreground">Add your first book to get started!</p>
+            <BookOpen className="h-12 w-12 text-slate-600 mb-4" />
+            <p className="text-lg font-medium text-slate-400">No books logged yet</p>
+            <p className="text-sm text-slate-500">Add your first book to get started!</p>
           </CardContent>
         </Card>
       ) : (
         <div className="grid gap-4">
           {sortedBooks.map((book, index) => (
-            <Card key={book.id} className="group transition-all hover:shadow-md">
+            <Card key={book.id} className="group transition-all hover:shadow-md hover:shadow-black/20">
               <CardContent className="flex items-start gap-4 pt-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100 text-xl font-bold text-indigo-600 dark:bg-indigo-900 dark:text-indigo-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-900/50 text-xl font-bold text-indigo-300">
                   {index + 1}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold truncate">{book.title}</h3>
-                  <p className="text-sm text-muted-foreground">{book.author || 'Unknown Author'}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-400">{book.author || 'Unknown Author'}</p>
+                  <p className="text-xs text-slate-500 mt-1">
                     Finished: {format(new Date(book.dateFinished), 'MMM d, yyyy')}
                   </p>
                   {book.notes && (
-                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{book.notes}</p>
+                    <p className="mt-2 text-sm text-slate-400 line-clamp-2">{book.notes}</p>
                   )}
                 </div>
                 <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
@@ -211,7 +211,7 @@ export function BooksLog() {
                     variant="ghost"
                     size="icon"
                     onClick={() => openEditDialog(book)}
-                    className="text-muted-foreground hover:text-foreground h-8 w-8 sm:h-10 sm:w-10"
+                    className="text-slate-400 hover:text-white hover:bg-white/[0.06] h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -219,7 +219,7 @@ export function BooksLog() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDelete(book.id)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 sm:h-10 sm:w-10"
+                    className="text-red-400 hover:text-red-300 hover:bg-red-950/30 h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

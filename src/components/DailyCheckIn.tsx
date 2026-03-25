@@ -19,39 +19,38 @@ import { cn } from '@/lib/utils';
 export function DailyCheckIn() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const dateStr = format(selectedDate, 'yyyy-MM-dd');
-  
+
   const { getDailyLog, updateDailyLog, checkIn } = useTrackerStore();
   const dailyLog = getDailyLog(dateStr);
-  
+
   const booleanFields: DailyLogField[] = [
     'wakeBefore9am', 'laFitness', 'closedAllRings', 'intermittentFast',
     'alcoholUsed', 'weedUsed', 'fastFood',
-    'phoneFreeEvening', 'phoneFreeDate', 'pickleball', 'golf', 'liveEvent'
+    'phoneFreeEvening', 'pickleball', 'golf', 'liveEvent'
   ];
-  
+
   const numberFields: DailyLogField[] = ['weight', 'screenTime', 'caffeine'];
-  
+
   const completedBooleans = booleanFields.filter((key) => {
-    // For "negative" habits, NOT doing them is good
     const negativeHabits = ['alcoholUsed', 'weedUsed', 'fastFood'];
     if (negativeHabits.includes(key)) {
       return !dailyLog[key as keyof typeof dailyLog];
     }
     return dailyLog[key as keyof typeof dailyLog];
   }).length;
-  
+
   const isToday = format(new Date(), 'yyyy-MM-dd') === dateStr;
-  
+
   const handleBooleanChange = (field: DailyLogField) => {
     const currentValue = dailyLog[field as keyof typeof dailyLog] as boolean;
     updateDailyLog(dateStr, { [field]: !currentValue });
   };
-  
+
   const handleNumberChange = (field: DailyLogField, value: string) => {
     const numValue = value === '' ? null : parseFloat(value);
     updateDailyLog(dateStr, { [field]: numValue });
   };
-  
+
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Date Navigation */}
@@ -61,18 +60,18 @@ export function DailyCheckIn() {
             variant="ghost"
             size="icon"
             onClick={() => setSelectedDate(subDays(selectedDate, 1))}
-            className="hover:bg-amber-100 dark:hover:bg-amber-900/30 h-10 w-10"
+            className="hover:bg-white/[0.06] h-10 w-10"
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
-          
+
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className={cn(
                   'flex-1 sm:flex-none sm:min-w-[220px] justify-center font-semibold text-sm sm:text-base',
-                  isToday && 'border-amber-500 bg-amber-50 dark:bg-amber-900/20'
+                  isToday && 'border-blue-500/50 bg-blue-950/30'
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
@@ -89,27 +88,27 @@ export function DailyCheckIn() {
               />
             </PopoverContent>
           </Popover>
-          
+
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSelectedDate(addDays(selectedDate, 1))}
-            className="hover:bg-amber-100 dark:hover:bg-amber-900/30 h-10 w-10"
+            className="hover:bg-white/[0.06] h-10 w-10"
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
         </div>
-        
+
         <div className="flex items-center gap-2">
           {isToday && (
-            <Badge className="bg-amber-500 hover:bg-amber-600">Today</Badge>
+            <Badge className="bg-blue-600 text-white border-0">Today</Badge>
           )}
           {dailyLog.checkedIn && (
-            <Badge className="bg-green-500 hover:bg-green-600">✓ Checked In</Badge>
+            <Badge className="bg-emerald-600 text-white border-0">✓ Checked In</Badge>
           )}
         </div>
       </div>
-      
+
       {/* Number Inputs */}
       <Card>
         <CardHeader>
@@ -144,7 +143,7 @@ export function DailyCheckIn() {
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Positive Habits */}
       <Card>
         <CardHeader>
@@ -168,8 +167,8 @@ export function DailyCheckIn() {
                     className={cn(
                       'flex items-center gap-2 sm:gap-3 rounded-lg border p-3 sm:p-4 transition-all cursor-pointer active:scale-[0.98]',
                       checked
-                        ? 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-950/30'
-                        : 'border-gray-200 hover:border-amber-300 hover:bg-amber-50/50 dark:border-gray-700 dark:hover:border-amber-700'
+                        ? 'border-green-600/50 bg-green-950/30'
+                        : 'border-white/[0.08] hover:border-blue-500/40 hover:bg-blue-950/20'
                     )}
                     onClick={() => handleBooleanChange(field)}
                   >
@@ -183,13 +182,13 @@ export function DailyCheckIn() {
                       htmlFor={field}
                       className={cn(
                         'flex-1 cursor-pointer text-xs sm:text-sm font-medium leading-tight',
-                        checked && 'text-green-700 dark:text-green-400'
+                        checked ? 'text-green-400' : 'text-slate-300'
                       )}
                     >
                       {fieldInfo.label}
                     </Label>
                     {checked && (
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0 hidden sm:block" />
+                      <Check className="h-4 w-4 text-green-400 shrink-0 hidden sm:block" />
                     )}
                   </div>
                 );
@@ -197,9 +196,9 @@ export function DailyCheckIn() {
           </div>
         </CardContent>
       </Card>
-      
-      {/* Negative Habits (things to avoid) */}
-      <Card className="border-red-200 dark:border-red-900">
+
+      {/* Negative Habits */}
+      <Card className="border-red-900/40">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <span className="text-2xl">🚫</span> Things to Avoid
@@ -219,8 +218,8 @@ export function DailyCheckIn() {
                   className={cn(
                     'flex flex-col sm:flex-row items-center gap-1 sm:gap-3 rounded-lg border p-3 sm:p-4 transition-all cursor-pointer active:scale-[0.98] text-center sm:text-left',
                     checked
-                      ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-950/30'
-                      : 'border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/20'
+                      ? 'border-red-700/50 bg-red-950/30'
+                      : 'border-green-700/40 bg-green-950/20'
                   )}
                   onClick={() => handleBooleanChange(field as DailyLogField)}
                 >
@@ -234,13 +233,13 @@ export function DailyCheckIn() {
                     htmlFor={field}
                     className={cn(
                       'cursor-pointer text-xs sm:text-sm font-medium leading-tight',
-                      checked ? 'text-red-700 dark:text-red-400' : 'text-green-700 dark:text-green-400'
+                      checked ? 'text-red-400' : 'text-green-400'
                     )}
                   >
                     {fieldInfo.label}
                   </Label>
                   {!checked && (
-                    <span className="text-green-600 text-[10px] sm:text-xs font-medium hidden sm:inline">Clean! ✓</span>
+                    <span className="text-green-400 text-[10px] sm:text-xs font-medium hidden sm:inline">Clean! ✓</span>
                   )}
                 </div>
               );
@@ -248,7 +247,7 @@ export function DailyCheckIn() {
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Notes */}
       <Card>
         <CardHeader>
@@ -265,31 +264,31 @@ export function DailyCheckIn() {
           />
         </CardContent>
       </Card>
-      
+
       {/* Check-in Button */}
       <div className="flex flex-col items-center gap-3">
         {!dailyLog.checkedIn ? (
           <Button
             size="lg"
             onClick={() => checkIn(dateStr)}
-            className="min-w-[200px] text-lg font-semibold bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+            className="min-w-[200px] text-lg font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg shadow-blue-900/30"
           >
             Complete Check-in
           </Button>
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+            <div className="flex items-center gap-2 text-green-400">
               <Check className="h-5 w-5" />
               <span className="font-semibold">Day Checked In ✓</span>
             </div>
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-slate-400">
               ✨ This day is locked in! Your data counts towards weekly and monthly goals.
             </p>
             <Button
               variant="outline"
               size="sm"
               onClick={() => updateDailyLog(dateStr, { checkedIn: false })}
-              className="mt-2 text-orange-600 border-orange-300 hover:bg-orange-50 dark:hover:bg-orange-950"
+              className="mt-2 text-blue-400 border-blue-500/30 hover:bg-blue-950/30"
             >
               Undo Check-in (Edit Mode)
             </Button>

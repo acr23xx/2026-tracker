@@ -10,14 +10,13 @@ import {
   isAfter,
   isBefore,
 } from 'date-fns';
-import type { DailyLog, Book, Movie, Sprint, OneTimeGoal, WeeklySummary, MonthlySummary, BingoSquare } from './types';
+import type { DailyLog, Book, Movie, OneTimeGoal, WeeklySummary, MonthlySummary, BingoSquare } from './types';
 
 interface TrackerState {
   // Data
   dailyLogs: Record<string, DailyLog>;
   books: Book[];
   movies: Movie[];
-  sprints: Sprint[];
   oneTimeGoals: OneTimeGoal[];
   isLoading: boolean;
   
@@ -39,11 +38,6 @@ interface TrackerState {
   addMovie: (movie: Omit<Movie, 'id'>) => Promise<void>;
   updateMovie: (id: string, updates: Partial<Movie>) => Promise<void>;
   deleteMovie: (id: string) => Promise<void>;
-  
-  // Sprint actions
-  addSprint: (sprint: Omit<Sprint, 'id'>) => Promise<void>;
-  updateSprint: (id: string, updates: Partial<Sprint>) => Promise<void>;
-  deleteSprint: (id: string) => Promise<void>;
   
   // Goal actions
   toggleGoalComplete: (id: string) => Promise<void>;
@@ -76,7 +70,6 @@ const createEmptyDailyLog = (date: string): DailyLog => ({
   weedUsed: false,
   fastFood: false,
   phoneFreeEvening: false,
-  phoneFreeDate: false,
   pickleball: false,
   golf: false,
   liveEvent: false,
@@ -87,25 +80,22 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
   dailyLogs: {},
   books: [],
   movies: [],
-  sprints: [],
   oneTimeGoals: [],
   isLoading: true,
   
   loadAllData: async () => {
     try {
-      const [logsRes, booksRes, moviesRes, sprintsRes, goalsRes] = await Promise.all([
+      const [logsRes, booksRes, moviesRes, goalsRes] = await Promise.all([
         fetch('/api/daily-logs'),
         fetch('/api/books'),
         fetch('/api/movies'),
-        fetch('/api/sprints'),
         fetch('/api/goals'),
       ]);
-      
-      const [logs, books, movies, sprints, goals] = await Promise.all([
+
+      const [logs, books, movies, goals] = await Promise.all([
         logsRes.json(),
         booksRes.json(),
         moviesRes.json(),
-        sprintsRes.json(),
         goalsRes.json(),
       ]);
       
@@ -121,7 +111,6 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
         dailyLogs: logsRecord,
         books: Array.isArray(books) ? books : [],
         movies: Array.isArray(movies) ? movies : [],
-        sprints: Array.isArray(sprints) ? sprints : [],
         oneTimeGoals: Array.isArray(goals) ? goals : [],
         isLoading: false,
       });
@@ -251,46 +240,6 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       await fetch(`/api/movies/${id}`, { method: 'DELETE' });
     } catch (error) {
       console.error('Failed to delete movie:', error);
-    }
-  },
-  
-  addSprint: async (sprint) => {
-    try {
-      const res = await fetch('/api/sprints', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sprint),
-      });
-      const newSprint = await res.json();
-      set((state) => ({ sprints: [...state.sprints, newSprint] }));
-    } catch (error) {
-      console.error('Failed to add sprint:', error);
-    }
-  },
-  
-  updateSprint: async (id, updates) => {
-    set((state) => ({
-      sprints: state.sprints.map((s) => (s.id === id ? { ...s, ...updates } : s)),
-    }));
-    
-    try {
-      await fetch(`/api/sprints/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates),
-      });
-    } catch (error) {
-      console.error('Failed to update sprint:', error);
-    }
-  },
-  
-  deleteSprint: async (id) => {
-    set((state) => ({ sprints: state.sprints.filter((s) => s.id !== id) }));
-    
-    try {
-      await fetch(`/api/sprints/${id}`, { method: 'DELETE' });
-    } catch (error) {
-      console.error('Failed to delete sprint:', error);
     }
   },
   
@@ -514,7 +463,6 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     let intermittentFastCount = 0;
     let lowCaffeineCount = 0;
     let phoneFreeEveningsCount = 0;
-    let phoneFreeeDateCount = 0;
     let pickleballCount = 0;
     let golfCount = 0;
     let liveEventCount = 0;
@@ -527,7 +475,6 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
         if (log.intermittentFast) intermittentFastCount++;
         if (log.caffeine !== null && log.caffeine < 200) lowCaffeineCount++;
         if (log.phoneFreeEvening) phoneFreeEveningsCount++;
-        if (log.phoneFreeDate) phoneFreeeDateCount++;
         if (log.pickleball) pickleballCount++;
         if (log.golf) golfCount++;
         if (log.liveEvent) liveEventCount++;
@@ -553,20 +500,20 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     const alcoholFreePercent = totalCheckedInDays > 0 ? (alcoholFreeDays / totalCheckedInDays) * 100 : 0;
     const fastFoodFreePercent = totalCheckedInDays > 0 ? (fastFoodFreeDays / totalCheckedInDays) * 100 : 0;
     
-    // Count sprints with 10+ points
-    const sprintsWith10Points = state.sprints.filter(s => s.points >= 10).length;
-    
-    // Count books and 2026 movies
+    // Count books and movies
     const booksCount = state.books.length;
     const moviesCount = state.movies.length;
-    
+
+    // Count savings months completed
+    const savingsCount = state.oneTimeGoals.filter(g => g.id.startsWith('savings-') && g.completed).length;
+
     // One-time goals
     const tvApp = state.oneTimeGoals.find(g => g.id === 'tv-app')?.completed || false;
     const officeWalls = state.oneTimeGoals.find(g => g.id === 'office-walls')?.completed || false;
     const dentist = state.oneTimeGoals.find(g => g.id === 'dentist')?.completed || false;
     const doctor = state.oneTimeGoals.find(g => g.id === 'doctor')?.completed || false;
     const clothes = state.oneTimeGoals.find(g => g.id === 'clothes')?.completed || false;
-    const dynastyAlgo = state.oneTimeGoals.find(g => g.id === 'dynasty-algo')?.completed || false;
+    const constructionTakeoffs = state.oneTimeGoals.find(g => g.id === 'construction-takeoffs')?.completed || false;
     
     // Consecutive weeks calculations
     const consecutivePhoneFreeWeeks = state.getConsecutivePhoneFreeWeeks();
@@ -581,10 +528,10 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       { id: '2', category: 'Habits', title: 'Weed-free 80% of the year', progress: Math.round(weedFreePercent), target: 80, done: weedFreePercent >= 80, measurement: `${weedFreeDays}/${totalCheckedInDays} days clean (${Math.round(weedFreePercent)}%)` },
       { id: '3', category: 'Fitness', title: 'Go to LA Fitness 80 times', progress: laFitnessCount, target: 80, done: laFitnessCount >= 80, measurement: 'LA Fitness check-ins' },
       { id: '4', category: 'Food', title: 'Fast-food-free 80% of the year', progress: Math.round(fastFoodFreePercent), target: 80, done: fastFoodFreePercent >= 80, measurement: `${fastFoodFreeDays}/${totalCheckedInDays} days clean (${Math.round(fastFoodFreePercent)}%)` },
-      { id: '5', category: 'Work', title: 'Get 10 points in a sprint 10 times', progress: sprintsWith10Points, target: 10, done: sprintsWith10Points >= 10, measurement: 'Sprints with 10+ points' },
-      
+      { id: '5', category: 'Finance', title: '$300/month to savings', progress: savingsCount, target: 12, done: savingsCount >= 12, measurement: 'Months with $300+ saved' },
+
       // Row 2
-      { id: '6', category: 'Media', title: 'Read 5 books', progress: booksCount, target: 5, done: booksCount >= 5, measurement: 'Books finished' },
+      { id: '6', category: 'Media', title: 'Read 2 books', progress: booksCount, target: 2, done: booksCount >= 2, measurement: 'Books finished' },
       { id: '7', category: 'Habits', title: 'Wake up before 9am 100 times', progress: wakeBefore9amCount, target: 100, done: wakeBefore9amCount >= 100, measurement: 'Wake <9am check-ins' },
       { id: '8', category: 'Media', title: 'Watch 50 movies', progress: moviesCount, target: 50, done: moviesCount >= 50, measurement: 'Movies watched' },
       { id: '9', category: 'Projects', title: 'Create TV show tracking app', progress: tvApp ? 1 : 0, target: 1, done: tvApp, measurement: 'One-time goal' },
@@ -602,14 +549,14 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       { id: '17', category: 'Habits', title: 'Alcohol-free 80% of the year', progress: Math.round(alcoholFreePercent), target: 80, done: alcoholFreePercent >= 80, measurement: `${alcoholFreeDays}/${totalCheckedInDays} days clean (${Math.round(alcoholFreePercent)}%)` },
       { id: '18', category: 'Home', title: 'Get rid of clothes that do not fit', progress: clothes ? 1 : 0, target: 1, done: clothes, measurement: 'One-time goal' },
       { id: '19', category: 'Habits', title: 'Intermittent fast 100 times', progress: intermittentFastCount, target: 100, done: intermittentFastCount >= 100, measurement: 'Intermittent fast days' },
-      { id: '20', category: 'Projects', title: 'Create a dynasty salary algorithm', progress: dynastyAlgo ? 1 : 0, target: 1, done: dynastyAlgo, measurement: 'One-time goal' },
+      { id: '20', category: 'Projects', title: 'Create construction takeoffs site', progress: constructionTakeoffs ? 1 : 0, target: 1, done: constructionTakeoffs, measurement: 'One-time goal' },
       
       // Row 5
       { id: '21', category: 'Fun', title: 'Go to 5 live events', progress: liveEventCount, target: 5, done: liveEventCount >= 5, measurement: 'Live events attended' },
       { id: '22', category: 'Fun', title: 'Play Pickleball 5 times', progress: pickleballCount, target: 5, done: pickleballCount >= 5, measurement: 'Pickleball sessions' },
       { id: '23', category: 'Fun', title: 'Golf 5 times', progress: golfCount, target: 5, done: golfCount >= 5, measurement: 'Golf sessions' },
       { id: '24', category: 'Habits', title: 'Under 200 mg of caffeine 75 times', progress: lowCaffeineCount, target: 75, done: lowCaffeineCount >= 75, measurement: 'Days with <200mg caffeine' },
-      { id: '25', category: 'Relationship', title: '10 phone-free date nights', progress: phoneFreeeDateCount, target: 10, done: phoneFreeeDateCount >= 10, measurement: 'Phone-free date nights' },
+      { id: '25', category: 'TBD', title: 'TBD', progress: 0, target: 1, done: false, measurement: 'To be determined' },
     ];
     
     return squares;

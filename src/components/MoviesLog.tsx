@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -20,7 +19,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
 
 export function MoviesLog() {
   const { movies, addMovie, updateMovie, deleteMovie } = useTrackerStore();
@@ -32,7 +30,7 @@ export function MoviesLog() {
     dateWatched: format(new Date(), 'yyyy-MM-dd'),
     notes: '',
   });
-  
+
   const openAddDialog = () => {
     setEditingMovie(null);
     setFormData({
@@ -43,7 +41,7 @@ export function MoviesLog() {
     });
     setIsDialogOpen(true);
   };
-  
+
   const openEditDialog = (movie: Movie) => {
     setEditingMovie(movie);
     setFormData({
@@ -54,34 +52,33 @@ export function MoviesLog() {
     });
     setIsDialogOpen(true);
   };
-  
+
   const handleSubmit = async () => {
     if (!formData.title.trim()) return;
-    
+
     if (editingMovie) {
       await updateMovie(editingMovie.id, formData);
     } else {
       await addMovie(formData);
     }
-    
+
     setIsDialogOpen(false);
     setEditingMovie(null);
   };
-  
+
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this movie?')) {
       await deleteMovie(id);
     }
   };
-  
+
   const sortedMovies = [...movies].sort(
     (a, b) => new Date(b.dateWatched).getTime() - new Date(a.dateWatched).getTime()
   );
-  
-  const movies2026 = movies.filter(m => m.releaseYear === 2026);
+
   const target = 50;
-  const progress = Math.min(100, (movies2026.length / target) * 100);
-  
+  const progress = Math.min(100, (movies.length / target) * 100);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -90,27 +87,27 @@ export function MoviesLog() {
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <span className="text-3xl">🎬</span> Movies Watched
           </h2>
-          <p className="text-muted-foreground">
-            Bingo Goal: Watch 50 movies released in 2026
+          <p className="text-slate-400">
+            Bingo Goal: Watch 50 movies
           </p>
         </div>
-        
-        <Button 
+
+        <Button
           onClick={openAddDialog}
-          className="bg-linear-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
+          className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 shadow-lg shadow-rose-900/30"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Movie
         </Button>
       </div>
-      
+
       {/* Dialog for Add/Edit */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{editingMovie ? 'Edit Movie' : 'Add a New Movie'}</DialogTitle>
             <DialogDescription>
-              {editingMovie ? 'Update the movie details' : 'Log a movie you\'ve watched (2026 releases count towards bingo!)'}
+              {editingMovie ? 'Update the movie details' : 'Log a movie you\'ve watched'}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -132,8 +129,8 @@ export function MoviesLog() {
                 onChange={(e) => setFormData({ ...formData, releaseYear: parseInt(e.target.value) || 2026 })}
                 placeholder="2026"
               />
-              <p className="text-xs text-muted-foreground">
-                Only 2026 movies count towards the bingo goal
+              <p className="text-xs text-slate-500">
+                All movies count towards the bingo goal
               </p>
             </div>
             <div className="space-y-2">
@@ -166,64 +163,49 @@ export function MoviesLog() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       {/* Progress Card */}
-      <Card className="border-2 border-rose-200 bg-linear-to-br from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 dark:border-rose-800">
+      <Card className="border-2 border-rose-700/50 bg-rose-950/30">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <div>
-                <span className="text-lg font-semibold text-rose-900 dark:text-rose-100">
-                  {movies2026.length} / {target} movies (2026)
-                </span>
-                <p className="text-sm text-rose-700 dark:text-rose-300">
-                  Total movies: {movies.length}
-                </p>
-              </div>
-              <span className="text-2xl">{movies2026.length >= target ? '✅' : '🎥'}</span>
+              <span className="text-lg font-semibold text-rose-200">
+                {movies.length} / {target} movies
+              </span>
+              <span className="text-2xl">{movies.length >= target ? '✅' : '🎥'}</span>
             </div>
             <Progress value={progress} className="h-3" />
-            {movies2026.length >= target && (
-              <p className="text-sm text-green-600 font-medium">🎉 Bingo square complete!</p>
+            {movies.length >= target && (
+              <p className="text-sm text-green-400 font-medium">🎉 Bingo square complete!</p>
             )}
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Movies List */}
       {sortedMovies.length === 0 ? (
-        <Card className="border-dashed">
+        <Card className="border-dashed border-white/[0.08]">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
-            <p className="text-lg font-medium text-muted-foreground">No movies logged yet</p>
-            <p className="text-sm text-muted-foreground">Add your first movie to get started!</p>
+            <Film className="h-12 w-12 text-slate-600 mb-4" />
+            <p className="text-lg font-medium text-slate-400">No movies logged yet</p>
+            <p className="text-sm text-slate-500">Add your first movie to get started!</p>
           </CardContent>
         </Card>
       ) : (
         <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
           {sortedMovies.map((movie) => (
-            <Card key={movie.id} className="group transition-all hover:shadow-md">
+            <Card key={movie.id} className="group transition-all hover:shadow-md hover:shadow-black/20">
               <CardContent className="flex items-start gap-4 pt-6">
-                <div className={cn(
-                  'flex h-12 w-12 items-center justify-center rounded-lg text-2xl',
-                  movie.releaseYear === 2026 
-                    ? 'bg-rose-100 dark:bg-rose-900' 
-                    : 'bg-gray-100 dark:bg-gray-800'
-                )}>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-rose-900/50 text-2xl">
                   🎬
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold truncate">{movie.title}</h3>
-                    {movie.releaseYear === 2026 && (
-                      <Badge className="bg-rose-500 text-xs">2026</Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-semibold truncate">{movie.title}</h3>
+                  <p className="text-sm text-slate-400">
                     Released: {movie.releaseYear} • Watched: {format(new Date(movie.dateWatched), 'MMM d, yyyy')}
                   </p>
                   {movie.notes && (
-                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{movie.notes}</p>
+                    <p className="mt-2 text-sm text-slate-400 line-clamp-2">{movie.notes}</p>
                   )}
                 </div>
                 <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
@@ -231,7 +213,7 @@ export function MoviesLog() {
                     variant="ghost"
                     size="icon"
                     onClick={() => openEditDialog(movie)}
-                    className="text-muted-foreground hover:text-foreground h-8 w-8 sm:h-10 sm:w-10"
+                    className="text-slate-400 hover:text-white hover:bg-white/[0.06] h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -239,7 +221,7 @@ export function MoviesLog() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDelete(movie.id)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 sm:h-10 sm:w-10"
+                    className="text-red-400 hover:text-red-300 hover:bg-red-950/30 h-8 w-8 sm:h-10 sm:w-10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
