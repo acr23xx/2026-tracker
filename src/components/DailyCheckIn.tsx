@@ -29,7 +29,7 @@ export function DailyCheckIn() {
     'phoneFreeEvening', 'pickleball', 'golf', 'liveEvent'
   ];
 
-  const numberFields: DailyLogField[] = ['weight', 'screenTime', 'caffeine'];
+  const numberFields: DailyLogField[] = ['weight', 'screenTime', 'caffeine', 'savingsTransfer'];
 
   const completedBooleans = booleanFields.filter((key) => {
     const negativeHabits = ['alcoholUsed', 'weedUsed', 'fastFood'];
@@ -120,7 +120,7 @@ export function DailyCheckIn() {
           </CardDescription>
         </CardHeader>
         <CardContent className="px-4 sm:px-6">
-          <div className="grid gap-3 sm:gap-4 grid-cols-3">
+          <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-4">
             {numberFields.map((field) => {
               const fieldInfo = DAILY_LOG_FIELDS[field];
               const value = dailyLog[field as keyof typeof dailyLog] as number | null;
@@ -132,7 +132,7 @@ export function DailyCheckIn() {
                     type="number"
                     inputMode="decimal"
                     step={field === 'weight' ? '0.1' : '1'}
-                    placeholder={field === 'weight' ? '175' : field === 'screenTime' ? '4' : '100'}
+                    placeholder={field === 'weight' ? '175' : field === 'screenTime' ? '4' : field === 'savingsTransfer' ? '0' : '100'}
                     value={value === null ? '' : value}
                     onChange={(e) => handleNumberChange(field, e.target.value)}
                     className="text-base sm:text-lg h-11 sm:h-10"

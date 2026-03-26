@@ -15,6 +15,7 @@ export interface DailyLog {
   // Screen & Substances
   screenTime: number | null;
   caffeine: number | null;
+  savingsTransfer: number | null;
   alcoholUsed: boolean;
   weedUsed: boolean;
   fastFood: boolean;
@@ -93,6 +94,7 @@ export const DAILY_LOG_FIELDS = {
   intermittentFast: { label: '🍽️ Intermittent Fast', type: 'boolean' as const },
   screenTime: { label: '📱 Screen Time (hrs)', type: 'number' as const },
   caffeine: { label: '☕ Caffeine (mg)', type: 'number' as const },
+  savingsTransfer: { label: '💰 Savings ($)', type: 'number' as const },
   alcoholUsed: { label: '🍺 Alcohol Used', type: 'boolean' as const },
   weedUsed: { label: '🌿 Weed Used', type: 'boolean' as const },
   fastFood: { label: '🍔 Fast Food', type: 'boolean' as const },

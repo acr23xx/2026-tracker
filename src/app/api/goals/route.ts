@@ -8,23 +8,16 @@ const DEFAULT_GOALS = [
   { id: 'doctor', title: 'Go to the Doctor' },
   { id: 'clothes', title: 'Get rid of clothes that do not fit or do not wear' },
   { id: 'construction-takeoffs', title: 'Create construction takeoffs site' },
-  { id: 'savings-jan', title: '$300 to savings - January' },
-  { id: 'savings-feb', title: '$300 to savings - February' },
-  { id: 'savings-mar', title: '$300 to savings - March' },
-  { id: 'savings-apr', title: '$300 to savings - April' },
-  { id: 'savings-may', title: '$300 to savings - May' },
-  { id: 'savings-jun', title: '$300 to savings - June' },
-  { id: 'savings-jul', title: '$300 to savings - July' },
-  { id: 'savings-aug', title: '$300 to savings - August' },
-  { id: 'savings-sep', title: '$300 to savings - September' },
-  { id: 'savings-oct', title: '$300 to savings - October' },
-  { id: 'savings-nov', title: '$300 to savings - November' },
-  { id: 'savings-dec', title: '$300 to savings - December' },
 ];
 
 // GET all goals (creates defaults if none exist)
 export async function GET() {
   try {
+    // Clean up legacy savings-* goals
+    await prisma.oneTimeGoal.deleteMany({
+      where: { id: { startsWith: 'savings-' } },
+    });
+
     let goals = await prisma.oneTimeGoal.findMany({
       orderBy: { id: 'asc' },
     });

@@ -66,6 +66,7 @@ const createEmptyDailyLog = (date: string): DailyLog => ({
   intermittentFast: false,
   screenTime: null,
   caffeine: null,
+  savingsTransfer: null,
   alcoholUsed: false,
   weedUsed: false,
   fastFood: false,
@@ -504,8 +505,13 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
     const booksCount = state.books.length;
     const moviesCount = state.movies.length;
 
-    // Count savings months completed
-    const savingsCount = state.oneTimeGoals.filter(g => g.id.startsWith('savings-') && g.completed).length;
+    // Cumulative savings transfers
+    let totalSavingsTransfer = 0;
+    Object.values(logs).forEach((log) => {
+      if (log.savingsTransfer !== null && log.savingsTransfer !== undefined) {
+        totalSavingsTransfer += log.savingsTransfer;
+      }
+    });
 
     // One-time goals
     const tvApp = state.oneTimeGoals.find(g => g.id === 'tv-app')?.completed || false;
@@ -528,7 +534,7 @@ export const useTrackerStore = create<TrackerState>()((set, get) => ({
       { id: '2', category: 'Habits', title: 'Weed-free 80% of the year', progress: Math.round(weedFreePercent), target: 80, done: weedFreePercent >= 80, measurement: `${weedFreeDays}/${totalCheckedInDays} days clean (${Math.round(weedFreePercent)}%)` },
       { id: '3', category: 'Fitness', title: 'Go to LA Fitness 80 times', progress: laFitnessCount, target: 80, done: laFitnessCount >= 80, measurement: 'LA Fitness check-ins' },
       { id: '4', category: 'Food', title: 'Fast-food-free 80% of the year', progress: Math.round(fastFoodFreePercent), target: 80, done: fastFoodFreePercent >= 80, measurement: `${fastFoodFreeDays}/${totalCheckedInDays} days clean (${Math.round(fastFoodFreePercent)}%)` },
-      { id: '5', category: 'Finance', title: '$300/month to savings', progress: savingsCount, target: 12, done: savingsCount >= 12, measurement: 'Months with $300+ saved' },
+      { id: '5', category: 'Finance', title: 'Save $1000 for UK trip', progress: Math.round(totalSavingsTransfer), target: 1000, done: totalSavingsTransfer >= 1000, measurement: `$${Math.round(totalSavingsTransfer)} / $1000 saved` },
 
       // Row 2
       { id: '6', category: 'Media', title: 'Read 2 books', progress: booksCount, target: 2, done: booksCount >= 2, measurement: 'Books finished' },

@@ -24,6 +24,7 @@ model DailyLog {
   // Screen & Substances
   screenTime  Float?
   caffeine    Float?
+  savingsTransfer Float?
   alcoholUsed Boolean @default(false)
   weedUsed    Boolean @default(false)
   fastFood    Boolean @default(false)
